@@ -170,7 +170,7 @@ setInterval(function() {
                 direction: direction
             }));
     }
-}, 1000/50);
+}, 1000);
 
 //Every 30 seconds
 setInterval(function() {
@@ -196,4 +196,4 @@ setInterval(function() {
             movement.rotateDeg(90);
         }
     }
-}, 30000/50);
+}, 30000);
