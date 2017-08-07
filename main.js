@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2016 Lukas Metzger <developer@lukas-metzger.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-net = require('net');
-fs = require('fs');
+var net = require('net');
+var fs = require('fs');
+var path = require('path');
 var Vector = require('victor');
 
 //Get port, if no command line argument was supplied use 8000
@@ -41,29 +42,29 @@ var config = JSON.parse(fs.readFileSync(__dirname + "/config.json"));
 var sockets = [];
 //Create server
 var server = net.createServer(function(socket) {
-    
+
     //Add new socket to socket list
     sockets.push(socket);
-    
+
     //If socket is closed remove from list
     socket.on("close", function() {
         var index = sockets.indexOf(socket);
         sockets.splice(index, 1);
     });
-    
+
     //On error remove from list
     socket.on("error", function() {
        var index = sockets.indexOf(socket);
        sockets.splice(index, 1);
     });
-    
+
     //If some data is received assume it the watch enable command and send some responses
     socket.on("data", function(data) {
         socket.write('{"class":"DEVICES","devices":[{"class":"DEVICE","path":"/dev/pts/4","driver":"NMEA0183","activated":"2016-08-20T10:00:12.934Z","flags":1,"native":0,"bps":4800,"parity":"N","stopbits":1,"cycle":1.00}]}' + "\r\n");
         socket.write('{"class":"WATCH","enable":true,"json":true,"nmea":false,"raw":0,"scaled":false,"timing":false,"split24":false,"pps":false}' + "\r\n");
         socket.write('{"class":"DEVICE","path":"/dev/pts/4","driver":"NMEA0183","activated":"2016-08-20T10:12:11.296Z","native":0,"bps":4800,"parity":"N","stopbits":1,"cycle":1.00}' + "\r\n");
     });
-    
+
     socket.write('{"class":"VERSION","release":"3.16","rev":"3.16","proto_major":3,"proto_minor":11}' + "\r\n");
 });
 //Listen to Port
@@ -87,7 +88,7 @@ if(backup.movement) {
 } else {
     movement = new Vector(distancePerSecond, 0).rotateDeg(360*Math.random());
 }
-    
+
 //Get initial position
 if(backup.position) {
     position = Vector.fromArray(backup.position);
@@ -116,24 +117,24 @@ if(backup.direction) {
 setInterval(function() {
     //Rotate random ammount in current direction
     movement.rotateDeg(Math.pow(Math.random(), 4) * 1 * direction);
-    
+
     //Add current movement vector to position
     position.add(movement);
-    
+
     //If goal is reached, use new goal
     if(position.distance(goal) < distancePerSecond*300) {
         goal = new Vector();
         goal.x = (config.area.lat.max-config.area.lat.min)*Math.random() + config.area.lat.min;
         goal.y = (config.area.lon.max-config.area.lon.min)*Math.random() + config.area.lon.min;
     }
-    
+
     //If course is very wrong correct it
     if(Math.acos(goal.clone().subtract(position).dot(movement)) > Math.PI/2) {
         var newMov = goal.clone().subtract(position).normalize().multiply(new Vector(distancePerSecond, distancePerSecond));
         newMov.rotateDeg(Math.pow(Math.random(), 4) * -5 * direction);
         movement = newMov;
     }
-    
+
     //Generate data package
     var data = {
         class: "TPV",
@@ -151,16 +152,16 @@ setInterval(function() {
         speed: config.speed/3.6,
         climb: 0.000
     };
-    
+
     //Send messages to each socket
     sockets.forEach(function(socket) {
         //Send TPV data
         socket.write(JSON.stringify(data) + "\r\n");
-        
+
         //Send some sattelite state
         socket.write('{"class":"SKY","device":"/dev/pts/4","xdop":0.55,"ydop":0.72,"vdop":0.90,"tdop":1.00,"hdop":1.00,"gdop":2.09,"pdop":1.30,"satellites":[{"PRN":82,"el":37,"az":123,"ss":30,"used":false},{"PRN":67,"el":46,"az":40,"ss":29,"used":false},{"PRN":68,"el":68,"az":178,"ss":28,"used":false},{"PRN":74,"el":7,"az":296,"ss":0,"used":false},{"PRN":75,"el":9,"az":344,"ss":0,"used":false},{"PRN":69,"el":18,"az":203,"ss":0,"used":false},{"PRN":84,"el":23,"az":314,"ss":0,"used":false},{"PRN":83,"el":0,"az":0,"ss":0,"used":false}]}' + "\r\n");
     });
-    
+
     //Backup data to disk
     if(tmpFile) {
         fs.writeFile(tmpFile, JSON.stringify({
@@ -187,7 +188,7 @@ setInterval(function() {
             movement = newMov;
         }
     }
-    
+
     //turn randomly
     if(Math.random() > 0.95) {
         if(Math.random() < 0.5) {
