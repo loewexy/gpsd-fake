@@ -32,7 +32,7 @@ try {
 }
 
 //Read config file
-var config = JSON.parse(fs.readFileSync(__dirname + "/config.json"));
+var config = require(path.resolve(process.cwd(), "config.json"));
 
 ////////////////////////////////////////////////////////////////////////////////
 //Socket handling
