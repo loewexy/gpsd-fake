@@ -2,6 +2,9 @@
   "name": "gpsd-fake",
   "version": "1.0.0",
   "description": "Fakes a instance of gpsd and gives random data to clients.",
+  "bin": {
+    "gpsd-fake": "./bin/gpsd-fake.js"
+  },
   "keywords": [
     "gps",
     "gpsd",
@@ -16,7 +19,8 @@
     "url": "https://lukas-metzger.com"
   },
   "dependencies": {
-    "victor": "^1.1.0"
+    "victor": "^1.1.0",
+    "yargs": "^8.0.2"
   },
   "devDependencies": {
     "eslint": "^3.19.0"

@@ -2,17 +2,44 @@
 
 This tool emulates a running instance of gpsd. It generates random movements based on a simple algorithm. Primary use case for it is testing of software which uses gpsd, but it can also be used for demonstration purposes. It is implemented in Javascript using nodejs.
 
-## Usage
+## Usage as CLI
 
-The software in configured in a configuration file named config.json. The content of it should be pretty self explanatory. You have to supply minimum and maximum values for latitude and longitude. Also you can configure the speed in kilometers per hour.
+```bash
+npm install -g gpsd-fake
+```
 
 Run it as follows:
 
 ```bash
-node main.js [port] [backup-file]
+gpsd-fake --port [port] --config-file [config-file] --tmp-file [tmp-file]
 ```
 
-Where `[port]` ist the port to bind to, if not supplied it defaults to 8000, and `[backup-file]` is a file in which gpsd-fake will regulary save its state, so you can restart the tool and proceed at the same position.
+* `-port`: Is the port to bind to, if not supplied it defaults to 8000
+* `-config-file`: Supply minimum and maximum values for latitude and longitude. You can configure the speed in kilometers per hour, also. See <https://github.com/loewexy/gpsd-fake/blob/master/config.json> for an example. Might be a just a filename, a relative or an absolute path.
+* `-tmp-file`: Is a file in which gpsd-fake will regulary save its state, so you can restart the tool and proceed at the same position.  Might be a just a filename, a relative or an absolute path. This feature is disabled by default.
+
+
+Display the help screen via:
+
+```bash
+gpsd-fake --help
+```
+
+## Usage as library
+
+```bash
+npm install --save gpsd-fake
+```
+
+```js
+var gpsdFake = require('gpsd-fake')
+
+gpsdFake({
+  port: 1234,
+  tmpFile: 'gpsd-fake-last-session.json', // might be relative or absolute
+  configFile: 'custom-config.json' // might be relative or absolute
+})
+```
 
 ## Contribute
 If you are looking for a new feature or you found a bug, feel free to create a pull request or open a issue.
