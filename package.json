@@ -2,6 +2,9 @@
   "name": "gpsd-fake",
   "version": "1.0.0",
   "description": "Fakes a instance of gpsd and gives random data to clients.",
+  "bin": {
+    "gpsd-fake": "./bin/gpsd-fake.js"
+  },
   "keywords": [
     "gps",
     "gpsd",
@@ -11,11 +14,15 @@
   "url": "https://github.com/loewexy/gpsd-fake",
   "licence": "Apache-2.0",
   "author": {
-      "name": "Lukas Metzger",
-      "email": "developer@lukas-metzger.com",
-      "url": "https://lukas-metzger.com"
+    "name": "Lukas Metzger",
+    "email": "developer@lukas-metzger.com",
+    "url": "https://lukas-metzger.com"
   },
   "dependencies": {
-    "victor": "^1.1.0"
+    "victor": "^1.1.0",
+    "yargs": "^8.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0"
   }
 }
