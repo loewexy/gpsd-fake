@@ -75,7 +75,7 @@ module.exports = function (options) {
         });
 
         //If some data is received assume it the watch enable command and send some responses
-        socket.on("data", function(data) {
+        socket.on("data", function() {
             socket.write('{"class":"DEVICES","devices":[{"class":"DEVICE","path":"/dev/pts/4","driver":"NMEA0183","activated":"2016-08-20T10:00:12.934Z","flags":1,"native":0,"bps":4800,"parity":"N","stopbits":1,"cycle":1.00}]}' + "\r\n");
             socket.write('{"class":"WATCH","enable":true,"json":true,"nmea":false,"raw":0,"scaled":false,"timing":false,"split24":false,"pps":false}' + "\r\n");
             socket.write('{"class":"DEVICE","path":"/dev/pts/4","driver":"NMEA0183","activated":"2016-08-20T10:12:11.296Z","native":0,"bps":4800,"parity":"N","stopbits":1,"cycle":1.00}' + "\r\n");
