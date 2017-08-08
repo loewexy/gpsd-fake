@@ -14,9 +14,9 @@ Run it as follows:
 gpsd-fake --port [port] --config-file [config-file] --tmp-file [tmp-file]
 ```
 
-* `-port`: Is the port to bind to, if not supplied it defaults to 8000
+* `-port`: Is the port to bind to, if not supplied it defaults to 2947
 * `-config-file`: Supply minimum and maximum values for latitude and longitude. You can configure the speed in kilometers per hour, also. See <https://github.com/loewexy/gpsd-fake/blob/master/config.json> for an example. Might be a just a filename, a relative or an absolute path.
-* `-tmp-file`: Is a file in which gpsd-fake will regulary save its state, so you can restart the tool and proceed at the same position.  Might be a just a filename, a relative or an absolute path. This feature is disabled by default.
+* `-tmp-file`: Is a file in which gpsd-fake will regulary save its state, so you can restart the tool and proceed at the same position. Might be a just a filename, a relative or an absolute path. This feature is disabled by default.
 
 
 Display the help screen via:
@@ -42,4 +42,8 @@ gpsdFake({
 ```
 
 ## Contribute
-If you are looking for a new feature or you found a bug, feel free to create a pull request or open a issue.
+If you are looking for a new feature or you found a bug, feel free to create a pull request or open a issue. If you do a pull request make shure that eslint is running without errors. You can run eslint using:
+
+```bash
+npm run-script lint
+```
