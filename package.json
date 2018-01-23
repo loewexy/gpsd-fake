@@ -5,6 +5,7 @@
   "bin": {
     "gpsd-fake": "./bin/gpsd-fake.js"
   },
+  "main": "./main.js",
   "keywords": [
     "gps",
     "gpsd",
